@@ -1,4 +1,4 @@
-## Guide: Google Chrome Remote Desktop Persistent Session
+# Guide: Google Chrome Remote Desktop Persistent Session
 
 Ubuntu supports multiple display sessions, and Chrome Remote Desktop will (by default) leverage this feature. That means you can be connected on the machine itself, and have several applications open; when you connect over remote desktop, it will start a new session (without your existing state). Conversely, if you start doing something remotely, then try to finish it up on the machine locally, all the apps you had open won't appear on the local display. As well as being a bit annoying, this can cause all sorts of nasty bugs (e.g the most recent state in one session clobbering the other during shutdown; launching applications in one session and they actually appear in the other... it's a real mess). Follow these steps to override the "smart" functionality, and just have a single session that's shared between local and remote access.
 
@@ -64,8 +64,8 @@ Save and exit the editor.
 
 On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
 
-### Credits
+## Resources
 
-Guide shamelessly forked from:
+Tested with CRD version 96.0.4664.9
 
-https://github.com/GObaddie/ubuntu_chrome_remote_desktop
+Guide shamelessly forked from: https://github.com/GObaddie/ubuntu_chrome_remote_desktop
