@@ -67,4 +67,5 @@ On a seperate computer, login to the remote desktop. If you have the host machin
 ### Credits
 
 Guide shamelessly forked from:
+
 https://github.com/GObaddie/ubuntu_chrome_remote_desktop
