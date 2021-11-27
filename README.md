@@ -6,7 +6,7 @@ Ubuntu supports multiple display sessions, and Chrome Remote Desktop will (by de
 
 ### Stop Chrome Remote Desktop (It is OK if it says that the daemon was not currently running)
 ```sh
-/opt/google/chrome-remote-desktop/chrome-remote-desktop --stop
+sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --stop
 ```
 
 ### Backup the original configuration
@@ -59,10 +59,16 @@ Save and exit the editor.
 
 ### Start Chrome Remote Desktop:
 ```sh
-/opt/google/chrome-remote-desktop/chrome-remote-desktop --start
+sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --start
 ```
 
 On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
+
+## Known Issues
+There is a more than zero chance that the Chrome Remote Desktop configuration file will reset when Chrome Remote Desktop is updated. If you are greeted with a black screen or a black screen with a session select window. Immediatly exit out of Chrome Remote Desktop and apply the solution again to the machine.
+
+## Future Work
+* Create a script that does the above automatically
 
 ## Resources
 
