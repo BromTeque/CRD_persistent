@@ -5,44 +5,66 @@ Ubuntu supports multiple display sessions, and Chrome Remote Desktop will (by de
 *There are probably some very clever reasons to run it the default way, and changing it like this is less secure - for example, if you unlock the machine remotely over RDP, the machine unlocks on the local session too - someone with physical access could see your mouse moving around, watch what you were typing or even take over with a keyboard / mouse. That said, I just can't get it to work at all in the default setup, so "less secure and working" is good enough for me.*.
 
 ### Stop Chrome Remote Desktop (It is OK if it says that the daemon was not currently running)
+
 ```sh
 sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --stop
 ```
 
 ### Backup the original configuration
+
 ```sh
 sudo cp /opt/google/chrome-remote-desktop/chrome-remote-desktop /opt/google/chrome-remote-desktop/chrome-remote-desktop.original
 ```
 
 ### Edit the config file
+
 ```sh
 sudo nano /opt/google/chrome-remote-desktop/chrome-remote-desktop
 ```
 
+Alternative: Use VS Code with: `code -a ...` (without sudo)
+
 ### Find DEFAULT_SIZES and amend to the remote computer's resolution. Example:
-```sh
+
+Found around line 75.
+
+```python
 DEFAULT_SIZES = "3840x2160"
 ```
+
+Qucik tip: Use ctrl + w in nano to find the desired variable.
+
 Some common resolutions: ``3840x2160, 2560x1440, 1920x1080, 1280x720``
 
-### Find the local display number in Terminal:
+
+### Find the local display number in a new terminal:
+
 ```sh
 echo $DISPLAY
 ```
 
 ### Set the X display number to the current display number (that you found in the previous command, mine was :0)
-```sh
+
+Found around line 108.
+
+```python
 FIRST_X_DISPLAY_NUMBER = 0
 ```
 
 ### Comment out sections that look for additional displays:
-```sh
+
+Found around line 455.
+
+```python
 # while os.path.exists(X_LOCK_FILE_TEMPLATE % display):
 # display += 1
 ```
 
 ### Reuse the existing X session instead of launching a new one. Alter launch_session() by commenting out launch_x_server() and launch_x_session() and instead setting the display environment variable, so that the function definition ultimately looks like the following:
-```sh
+
+Found around line 777.
+
+```python
 def launch_session(self, x_args):
   self._init_child_env()
   self._setup_pulseaudio()
@@ -58,6 +80,7 @@ def launch_session(self, x_args):
 Save and exit the editor.
 
 ### Start Chrome Remote Desktop:
+
 ```sh
 sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --start
 ```
