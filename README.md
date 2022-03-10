@@ -87,14 +87,20 @@ sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --start
 
 On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
 
+It has come to my attention that a restart might be required with more recent versions of Ubuntu and/or Chrome Remote Desktop. Please restart your computer if you still get a black screen or screen select after applying the patch.
+
 ## Known Issues
+
 There is a more than zero chance that the Chrome Remote Desktop configuration file will reset when Chrome Remote Desktop is updated. If you are greeted with a black screen or a black screen with a session select window. Immediatly exit out of Chrome Remote Desktop and apply the solution again to the machine.
 
+Computer might require a restart for the patch to take effect.
+
 ## Future Work
+
 * Create a script that does the above automatically
 
 ## Resources
 
-Tested with CRD version 96.0.4664.9
+Tested with CRD version 99.0.4844.11
 
 Guide shamelessly forked from: https://github.com/GObaddie/ubuntu_chrome_remote_desktop
