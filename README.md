@@ -68,7 +68,7 @@ Found around line 1031.
 
 Found around line 517.
 
-```pythom
+```python
 def launch_session(self, server_args, backoff_time):
     """Launches process required for session and records the backoff time
     for inhibitors so that process restarts are not attempted again until
