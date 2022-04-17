@@ -19,20 +19,24 @@ sudo cp /opt/google/chrome-remote-desktop/chrome-remote-desktop /opt/google/chro
 ### Edit the config file
 
 ```sh
+code -a /opt/google/chrome-remote-desktop/chrome-remote-desktop
+```
+
+Alternatively use nano:
+
+```sh
 sudo nano /opt/google/chrome-remote-desktop/chrome-remote-desktop
 ```
 
-Alternative: Use VS Code with: `code -a ...` (without sudo)
-
 ### Find DEFAULT_SIZES and amend to the remote computer's resolution. Example:
 
-Found around line 75.
+Found around line 78.
 
 ```python
 DEFAULT_SIZES = "3840x2160"
 ```
 
-Qucik tip: Use ctrl + w in nano to find the desired variable.
+Qucik tip: Use ctrl + w in nano or ctrl-f in code to find the desired variable.
 
 Some common resolutions: ``3840x2160, 2560x1440, 1920x1080, 1280x720``
 
@@ -45,7 +49,7 @@ echo $DISPLAY
 
 ### Set the X display number to the current display number (that you found in the previous command, mine was :0)
 
-Found around line 108.
+Found around line 111.
 
 ```python
 FIRST_X_DISPLAY_NUMBER = 0
@@ -53,7 +57,7 @@ FIRST_X_DISPLAY_NUMBER = 0
 
 ### Comment out sections that look for additional displays:
 
-Found around line 455.
+Found around line 1031.
 
 ```python
 # while os.path.exists(X_LOCK_FILE_TEMPLATE % display):
@@ -62,19 +66,27 @@ Found around line 455.
 
 ### Reuse the existing X session instead of launching a new one. Alter launch_session() by commenting out launch_x_server() and launch_x_session() and instead setting the display environment variable, so that the function definition ultimately looks like the following:
 
-Found around line 777.
+Found around line 517.
 
-```python
-def launch_session(self, x_args):
-  self._init_child_env()
-  self._setup_pulseaudio()
-  self._setup_gnubby()
-  # self._launch_x_server(x_args)
-  # if not self._launch_pre_session():
-    # If there was no pre-session script, launch the session immediately.
-    # self.launch_x_session()
-  display = self.get_unused_display_number()
-  self.child_env["DISPLAY"] = ":%d" % display
+```pythom
+def launch_session(self, server_args, backoff_time):
+    """Launches process required for session and records the backoff time
+    for inhibitors so that process restarts are not attempted again until
+    that time has passed."""
+    logging.info("Setting up and launching session")
+    self._init_child_env()
+    self.setup_audio()
+    self._setup_gnubby()
+    # self._launch_server(server_args)
+    # if not self._launch_pre_session():
+      # If there was no pre-session script, launch the session immediately.
+      # self.launch_desktop_session()
+    display = self.get_unused_display_number()
+    self.child_env["DISPLAY"] = ":%d" % display
+    self.server_inhibitor.record_started(MINIMUM_PROCESS_LIFETIME,
+                                      backoff_time)
+    self.session_inhibitor.record_started(MINIMUM_PROCESS_LIFETIME,
+                                     backoff_time)
 ```
 
 Save and exit the editor.
@@ -85,9 +97,9 @@ Save and exit the editor.
 sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --start
 ```
 
-On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
+A restart seems to be required with more recent versions of Chrome Remote Desktop. Please restart your computer if you still get a black screen or screen select after applying the patch.
 
-It has come to my attention that a restart might be required with more recent versions of Ubuntu and/or Chrome Remote Desktop. Please restart your computer if you still get a black screen or screen select after applying the patch.
+On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
 
 ## Known Issues
 
@@ -101,6 +113,8 @@ Computer might require a restart for the patch to take effect.
 
 ## Resources
 
-Tested with CRD version 99.0.4844.11
+Look at commit history if running an older Chrome Remote desktop Version
+
+Tested with Chrome Remote Desktop version 101.0.4951.26 and Ubuntu version 20.04
 
 Guide shamelessly forked from: https://github.com/GObaddie/ubuntu_chrome_remote_desktop
