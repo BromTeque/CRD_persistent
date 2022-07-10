@@ -7,8 +7,10 @@ Ubuntu supports multiple display sessions, and Chrome Remote Desktop will (by de
 ### Stop Chrome Remote Desktop (It is OK if it says that the daemon was not currently running)
 
 ```sh
-sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --stop
+sudo systemctl stop chrome-remote-desktop@$USER.service
 ```
+
+NOTE: You might have to replace "$USER" if it spits out an error. Try pressing "tab" after "... chrome-remote-desktop..." to see what it autofills.
 
 ### Backup the original configuration
 
@@ -33,7 +35,7 @@ sudo nano /opt/google/chrome-remote-desktop/chrome-remote-desktop
 Found around line 78.
 
 ```python
-DEFAULT_SIZES = "3840x2160"
+DEFAULT_SIZES = "1920x1080"
 ```
 
 Qucik tip: Use ctrl + w in nano or ctrl-f in code to find the desired variable.
@@ -94,10 +96,10 @@ Save and exit the editor.
 ### Start Chrome Remote Desktop:
 
 ```sh
-sudo /opt/google/chrome-remote-desktop/chrome-remote-desktop --start
+sudo systemctl start chrome-remote-desktop@$USER.service
 ```
 
-A restart seems to be required with more recent versions of Chrome Remote Desktop. Please restart your computer if you still get a black screen or screen select after applying the patch.
+Please restart your computer if you still get a black screen or session select after applying the patch.
 
 On a seperate computer, login to the remote desktop. If you have the host machine hooked up to a monitor, you should be seeing that the remote session is controlling what ever's on the screen of the local monitor.
 
@@ -115,6 +117,6 @@ Computer might require a restart for the patch to take effect.
 
 Look at commit history if running an older Chrome Remote desktop Version
 
-Tested with Chrome Remote Desktop version 101.0.4951.26 and Ubuntu version 20.04
+Tested with Chrome Remote Desktop version 103.0.5060.46 and Ubuntu version 20.04
 
 Guide shamelessly forked from: https://github.com/GObaddie/ubuntu_chrome_remote_desktop
